@@ -1,0 +1,33 @@
+name: chatgpt_client
+description: A sample ChatGPT client built with Flutter.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.4 <3.0.0'
+
+dependencies:
+  cupertino_icons: ^1.0.2
+  # chatgpt_client: ^2.0.0
+  dart_openai: ^1.8.0
+  flutter:
+    sdk: flutter
+  # google_fonts: ^2.1.0
+  shared_preferences: ^2.0.13
+  path_provider: ^2.0.7
+  url_launcher: ^6.0.9 
+
+
+
+  markdown_widget: ^2.0.0+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  assets:
+    - lib/logo.png
+  uses-material-design: true

@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Herbal-Tea-Assistant",
+        "cwd": "C:\\Users\\pgunh\\GitHub\\Herbal-Tea-Assistant",
+        "request": "launch",
+        "type": "dart",
+        "program": "lib/main.dart"
+      },
+      {
+        "name": "Herbal-Tea-Assistant (profile mode)",
+        "cwd": "C:\\Users\\pgunh\\GitHub\\Herbal-Tea-Assistant",
+        "request": "launch",
+        "type": "dart",
+        "flutterMode": "profile"
+      },
+      {
+        "name": "Herbal-Tea-Assistant (release mode)",
+        "cwd": "C:\\Users\\pgunh\\GitHub\\Herbal-Tea-Assistant",
+        "request": "launch",
+        "type": "dart",
+        "flutterMode": "release"
+      }
+    ]
+  }
+  
