@@ -73,7 +73,6 @@ Map<String, List<String>> herbalTeaRecipes = {
     List<MapEntry<String, List<String>>> sortedRecipes = [];
 
     herbalTeaRecipes.forEach((recipe, ingredients) {
-      int matchingIngredients = ingredients.where((ingredient) => widget.selectedHerbs.contains(ingredient)).length;
       sortedRecipes.add(MapEntry(recipe, ingredients));
     });
 
