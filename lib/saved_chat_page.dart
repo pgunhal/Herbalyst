@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-class SavedChatPage extends StatefulWidget {
+class SavedRecipesPage extends StatefulWidget {
   @override
-  _SavedChatPageState createState() => _SavedChatPageState();
+  _SavedRecipesPageState createState() => _SavedRecipesPageState();
 }
 
-class _SavedChatPageState extends State<SavedChatPage> {
+class _SavedRecipesPageState extends State<SavedRecipesPage> {
   final TextEditingController _textEditingController = TextEditingController();
   final List<String> _notes = [];
 
@@ -20,7 +20,7 @@ class _SavedChatPageState extends State<SavedChatPage> {
 void _loadNotes() async {
   try {
     final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/notes.txt');
+    final file = File('${directory.path}/recipes.txt');
     if (await file.exists()) {
       final content = await file.readAsString();
       setState(() {
@@ -36,7 +36,7 @@ void _loadNotes() async {
 void _saveNotes() async {
   try {
     final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/notes.txt');
+    final file = File('${directory.path}/recipes.txt');
     final content = _notes.join('===NoteDelimiter===');
     await file.writeAsString(content);
   } catch (e) {
@@ -56,7 +56,7 @@ void _saveNotes() async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Saved Chat'),
+        title: const Text('Saved Recipes'),
         backgroundColor: Colors.grey[900],
       ),
       body: Column(

@@ -166,7 +166,7 @@ Future<void> _saveChatMessages() async {
   void _saveNotes(String message) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/notes.txt');
+      final file = File('${directory.path}/recipes.txt');
       // final userMessages = _messages.where((msg) => msg.isUserMessage).map((msg) => msg.content).join('\n');
       await file.writeAsString(message);
     } catch (e) {

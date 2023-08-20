@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:chatgpt_client/recipes_page.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -53,6 +56,21 @@ class _IngredientsPageState extends State<IngredientsPage> {
     }
   }
 
+
+void _saveHerb(String message) async {
+  try {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/ingredients.txt');
+
+    // Append the copied recipe to the existing content
+    final copiedRecipe = '===NoteDelimiter===$message';
+    await file.writeAsString(copiedRecipe, mode: FileMode.append);
+  } catch (e) {
+    // Handle errors
+  }
+}
+
+
 void _openWalmart(String herb) async {
   final walmartUrl = 'https://www.walmart.com/search/?query=$herb';
   if (await canLaunch(walmartUrl)) {
@@ -81,7 +99,7 @@ void _openWalmart(String herb) async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Browse Recipes'),
+        title: Text('Browse Ingredients'),
         backgroundColor: Colors.grey[900],
       ),
       body: Column(
@@ -134,9 +152,15 @@ void _openWalmart(String herb) async {
                                   },
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.shopping_bag), // You can change this icon
+                                  icon: Icon(Icons.shopping_bag),
                                   onPressed: () {
                                     _openWalmart(herb);
+                                  },
+                                ),
+                                 IconButton(
+                                  icon: Icon(Icons.save_alt),
+                                  onPressed: () {
+                                    _saveHerb(herb);
                                   },
                                 ),
                               ],

@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:chatgpt_client/ingredients_page.dart';
 import 'package:chatgpt_client/profile_page.dart';
+import 'package:chatgpt_client/recipes_page.dart';
+import 'package:chatgpt_client/saved_ingredients_page.dart';
 import 'package:flutter/material.dart';
 import 'package:chatgpt_client/saved_chat_page.dart'; // Import the SavedChatPage
 import 'package:chatgpt_client/secrets.dart';
@@ -115,7 +117,7 @@ Future<void> _promptApiKey() async {
       ),
      
       SizedBox(height: 4), // Add some spacing between title and list
-      Column(
+      const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('1. Enter your OpenAI API key below.'),
@@ -188,15 +190,23 @@ drawer: Drawer(
           title: const Text('Browse Recipes'),
           onTap: () {
             Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) => IngredientsPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => RecipesPage(selectedHerbs: [],)));
           },
         ),
         ListTile(
-          leading: const Icon(Icons.save),
-          title: const Text('Saved Chat'),
+          leading: const Icon(Icons.save_alt),
+          title: const Text('Saved Recipes'),
           onTap: () {
             Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) => SavedChatPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SavedRecipesPage()));
+          },
+        ),
+       ListTile(
+          leading: const Icon(Icons.food_bank),
+          title: const Text('Ingredients'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SavedIngredientsPage()));
           },
         ),
         
