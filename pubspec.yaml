@@ -30,4 +30,5 @@ dev_dependencies:
 flutter:
   assets:
     - lib/logo.png
+    - lib/articles/
   uses-material-design: true

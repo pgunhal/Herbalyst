@@ -6,7 +6,11 @@ import 'package:chatgpt_client/saved_ingredients_page.dart';
 import 'package:flutter/material.dart';
 import 'package:chatgpt_client/saved_chat_page.dart'; // Import the SavedChatPage
 import 'package:chatgpt_client/secrets.dart';
-import 'package:path_provider/path_provider.dart'; // Import the Secrets class
+import 'package:path_provider/path_provider.dart';
+
+import 'article.dart';
+import 'article_display_page.dart';
+import 'article_list_page.dart'; // Import the Secrets class
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key});
@@ -209,6 +213,16 @@ drawer: Drawer(
             Navigator.push(context, MaterialPageRoute(builder: (context) => SavedIngredientsPage()));
           },
         ),
+        ListTile(
+          leading: const Icon(Icons.article),
+          title: const Text('Articles'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ArticlesListPage()));
+          },
+        )
+
+
         
       ],
     ),
