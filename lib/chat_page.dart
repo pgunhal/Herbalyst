@@ -24,11 +24,19 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final _messages = <ChatMessage>[];
   var _awaitingResponse = false;
+  final ScrollController _scrollController = ScrollController();
+
 
   @override
   void initState() {
     super.initState();
     _loadChatMessages();
+  }
+
+    @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadChatMessages() async {
@@ -46,9 +54,6 @@ class _ChatPageState extends State<ChatPage> {
       print('Error loading chat messages: $e');
     }
   }
-
-
-  
 
   Future<void> _clearChat() async {
     final confirmed = await showDialog(
@@ -78,6 +83,33 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    }
+  }
+
+  
+  void _showInfoDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Chat'),
+          content: Text('Ask your personal AI assistant for recommendations, tailored recipes, and more. Save your favorite messages by pressing the \'save\' button. You can view saved messages in \'Saved Notes\'.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,26 +124,30 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
         actions: [
+           IconButton(
+            icon: Icon(Icons.info_outline),
+            onPressed: _showInfoDialog,
+          ),
           IconButton(
             onPressed: _clearChat,
             icon: Icon(Icons.delete),
           ),
         ],
       ),
-      body: Column(
+body: Column(
         children: [
           Expanded(
             child: ListView(
-              children: [
-                ..._messages.map(
-                  (msg) => MessageBubble(
-                    content: msg.content,
-                    isUserMessage: msg.isUserMessage,
-                    showSaveButton: !msg.isUserMessage, // Show save button for non-user messages
-                    onSave: () => _saveResponse(msg.content),
-                  ),
-                ),
-              ],
+              reverse: true,
+              controller: _scrollController,
+              children: _messages.reversed
+                  .map((msg) => MessageBubble(
+                        content: msg.content,
+                        isUserMessage: msg.isUserMessage,
+                        showSaveButton: !msg.isUserMessage,
+                        onSave: () => _saveResponse(msg.content),
+                      ))
+                  .toList(),
             ),
           ),
           MessageComposer(
@@ -132,20 +168,23 @@ Future<void> _onSubmitted(String message) async {
 
   try {
     final response = await widget.chatApi.completeChat(_messages);
+        print('API Response: $response'); // Debug: Print the full response
+
     setState(() {
       _messages.add(ChatMessage(response, false));
       _awaitingResponse = false;
     });
     _saveChatMessages(); // Save the updated chat messages
   } catch (err) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('An error occurred. Please try again.')),
-    );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(err.toString())),
+      );
     setState(() {
       _awaitingResponse = false;
     });
   }
 }
+
 
 Future<void> _saveChatMessages() async {
   try {

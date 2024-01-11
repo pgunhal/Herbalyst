@@ -92,7 +92,25 @@ void _openWalmart(String herb) async {
   }
 }
 
-
+  void _showInfoDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Browse Ingredients'),
+          content: Text('Look up commonly used herbs here. Use the \'Selected Herbs\' widget to view selected herbs. These herbs can be purchased on Instacart and Walmart, or saved using the respective icons. Use the \'Show Recipes\' icon to view recipes.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
 
 @override
@@ -101,6 +119,12 @@ void _openWalmart(String herb) async {
       appBar: AppBar(
         title: Text('Browse Ingredients'),
         backgroundColor: Colors.grey[900],
+          actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.info_outline),
+            onPressed: _showInfoDialog,
+          ),
+        ],
       ),
       body: Column(
         children: [

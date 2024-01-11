@@ -17,6 +17,8 @@ dependencies:
   shared_preferences: ^2.0.13
   path_provider: ^2.0.7
   url_launcher: ^6.0.9 
+  flutter_secure_storage: ^5.0.0
+
 
 
 

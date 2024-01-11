@@ -16,12 +16,38 @@ class _ArticlesListPageState extends State<ArticlesListPage> {
     futureArticles = loadArticlesFromFiles();
   }
 
+    void _showInfoDialog() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('User Profile Info'),
+            content: Text('Learn about the benefits of herbal tea, and other useful information in our curated collection of articles.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Articles'),
         backgroundColor: Colors.grey[900],
+         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.info_outline),
+            onPressed: _showInfoDialog,
+          ),
+        ],
       ),
       body: FutureBuilder<List<Article>>(
         future: futureArticles,

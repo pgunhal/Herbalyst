@@ -1,9 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart'; // Import the library for clipboard manipulation
-
+import 'package:path_provider/path_provider.dart';
 
 class RecipesPage extends StatefulWidget {
   final List<String> selectedHerbs;
@@ -68,75 +65,109 @@ Map<String, List<String>> herbalTeaRecipes = {
   'Minty Rose Herbal Tea': ['Mint', 'Rose Petals', 'Lavender'],
 };
 
-@override
+ 
+  String _searchQuery = '';
+  TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(() {
+      setState(() {
+        _searchQuery = _searchController.text.toLowerCase();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  List<MapEntry<String, List<String>>> _getFilteredRecipes() {
+    if (_searchQuery.isEmpty) {
+      return herbalTeaRecipes.entries.toList();
+    } else {
+      return herbalTeaRecipes.entries
+        .where((entry) => entry.key.toLowerCase().contains(_searchQuery) ||
+                          entry.value.any((ingredient) => ingredient.toLowerCase().contains(_searchQuery)))
+        .toList();
+    }
+  }
+
+  void _showInfoDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Browse recipes'),
+          content: Text('Browse a wide range of custom herbal teas, sorted by ingredients. Search for teas matching your preferences at the top. Save your favorites for later using the save button. You can view saved recipes in \'Saved Notes\'.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<MapEntry<String, List<String>>> sortedRecipes = [];
-
-    herbalTeaRecipes.forEach((recipe, ingredients) {
-      sortedRecipes.add(MapEntry(recipe, ingredients));
-    });
-
-    sortedRecipes.sort((a, b) {
-      int aMatchingIngredients = a.value.where((ingredient) => widget.selectedHerbs.contains(ingredient)).length;
-      int bMatchingIngredients = b.value.where((ingredient) => widget.selectedHerbs.contains(ingredient)).length;
-      return bMatchingIngredients.compareTo(aMatchingIngredients);
-    });
+    List<MapEntry<String, List<String>>> filteredRecipes = _getFilteredRecipes();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tea Recipes'),
+        title: Text('Browse Recipes'),
         backgroundColor: Colors.grey[900],
+         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.info_outline),
+            onPressed: _showInfoDialog,
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              '* denotes previously selected ingredients',
-              style: TextStyle(
-                fontStyle: FontStyle.italic,
-                color: Colors.grey,
+            padding: EdgeInsets.all(16.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                labelText: 'Search Ingredients',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
               ),
             ),
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: sortedRecipes.length,
+              itemCount: filteredRecipes.length,
               itemBuilder: (context, index) {
-                final recipeEntry = sortedRecipes[index];
+                final recipeEntry = filteredRecipes[index];
                 final recipeTitle = recipeEntry.key;
                 final ingredients = recipeEntry.value;
 
                 return ListTile(
-                  title: Text(recipeTitle),  
-                  subtitle: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: ingredients.map((ingredient) {
-                            return widget.selectedHerbs.contains(ingredient)
-                                ? '$ingredient*'
-                                : ingredient;
-                          }).join(', '),
-                        ),
-                      ],
-                    ),
-                  ),
+                  title: Text(recipeTitle),
+                  subtitle: Text(ingredients.join(', ')),
                   trailing: IconButton(
-  icon: Icon(Icons.copy),
-  onPressed: () {
-    final recipeText = '$recipeTitle\nIngredients: ${ingredients.join(', ')}';
-    _saveNotes(recipeText); // Call the function to save copied recipe
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Recipe saved')),
-    );
-  },
-),
-
+                    icon: Icon(Icons.save_alt),
+                    onPressed: () {
+                      final recipeText = '$recipeTitle\nIngredients: ${ingredients.join(', ')}';
+                      _saveNotes(recipeText);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Recipe saved')),
+                      );
+                    },
+                  ),
                   onTap: () {
-                    // TODO: Implement a way to show the recipe details
-                    // You can navigate to a detailed recipe page or display a modal bottom sheet
+                    // TODO: Implement recipe detail view if necessary
                   },
                 );
               },
@@ -147,16 +178,14 @@ Map<String, List<String>> herbalTeaRecipes = {
     );
   }
 
- void _saveNotes(String message) async {
-  try {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/recipes.txt');
-
-    // Append the copied recipe to the existing content
-    final copiedRecipe = '===NoteDelimiter===$message';
-    await file.writeAsString(copiedRecipe, mode: FileMode.append);
-  } catch (e) {
-    // Handle errors
+  void _saveNotes(String message) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/recipes.txt');
+      final copiedRecipe = '===NoteDelimiter===$message';
+      await file.writeAsString(copiedRecipe, mode: FileMode.append);
+    } catch (e) {
+      // Handle errors
+    }
   }
-}
 }

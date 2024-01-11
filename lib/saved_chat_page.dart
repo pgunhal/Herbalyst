@@ -52,12 +52,38 @@ void _saveNotes() async {
     });
   }
 
+  void _showInfoDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Saved Notes'),
+          content: Text('View saved messages from chat here. You can also add custom notes. Swipe left to delete notes.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Saved Recipes'),
+        title: const Text('Saved Notes'),
         backgroundColor: Colors.grey[900],
+          actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.info_outline),
+            onPressed: _showInfoDialog,
+          ),
+        ],
       ),
       body: Column(
         children: [

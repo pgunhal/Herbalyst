@@ -53,12 +53,38 @@ class _SavedIngredientsPageState extends State<SavedIngredientsPage> {
     });
   }
 
+    void _showInfoDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('My Ingredients'),
+          content: Text('Save ingredients in this shopping list. Items are automatically crossed out when selected. Swipe left to delete. Use the \'Browse Ingredients\' icon to look up commonly used herbs.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Ingredients'),
         backgroundColor: Colors.grey[900],
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.info_outline),
+            onPressed: _showInfoDialog,
+          ),
+        ],
       ),
       body: Column(
         children: [

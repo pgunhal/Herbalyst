@@ -45,7 +45,7 @@ class MessageBubble extends StatelessWidget {
               if (showSaveButton)
                 IconButton(
                   onPressed: onSave,
-                  icon: const Icon(Icons.content_copy),
+                  icon: const Icon(Icons.save_alt),
                   iconSize: 16.0,
                   color: textColor,
                 ),

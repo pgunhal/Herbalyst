@@ -1,9 +1,5 @@
-import 'package:chatgpt_client/home_page.dart';
-import 'package:chatgpt_client/secrets.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
-
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserProfilePage extends StatefulWidget {
   @override
@@ -11,65 +7,51 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
-  TextEditingController _apiKeyController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmPasswordController = TextEditingController();
+  final FlutterSecureStorage _storage = FlutterSecureStorage();
 
   @override
   void initState() {
     super.initState();
-    // Load user profile from the local file
     _loadUserProfile();
   }
 
-  void _loadUserProfile() async {
-    try {
-      final file = File(await _getFilePath());
-      if (file.existsSync()) {
-        final profileData = await file.readAsLines();
-        _apiKeyController.text = profileData[0];
-        _nameController.text = profileData[1];
-        _emailController.text = profileData[2];
-      }
-    } catch (e) {
-      // Handle any errors
+  Future<void> _loadUserProfile() async {
+    String? username = await _storage.read(key: 'username');
+    setState(() {
+      _usernameController.text = username ?? '';
+    });
+  }
+  Future<void> _saveUserProfile() async {
+    if (_passwordController.text == _confirmPasswordController.text) {
+      await _storage.write(key: 'username', value: _usernameController.text);
+      await _storage.write(key: 'password', value: _passwordController.text);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profile Saved')));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Passwords do not match')));
     }
   }
 
-void _saveUserProfile(BuildContext context) async {
-  final file = File(await _getFilePath());
-  final keyFile = File(await _getApiPath());
-  final profileData = [
-    _apiKeyController.text,
-    _nameController.text,
-    _emailController.text,
-  ];
-
-  try {
-    await file.writeAsString(profileData.join('\n'));
-    await keyFile.writeAsString(profileData[0]);
-    Secrets.apiKey = profileData[0];
-
-    // Reload the app by popping the current page and pushing it again
-    Navigator.pop(context);
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => HomePage()),
+  void _showInfoDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('User Profile Info'),
+          content: Text('You can change your username and password here.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
-  } catch (e) {
-    // Handle any errors
-  }
-}
-
-
-  Future<String> _getFilePath() async {
-    final directory = await getApplicationDocumentsDirectory();
-    return '${directory.path}/profile.txt';
-  }
-
-    Future<String> _getApiPath() async {
-    final directory = await getApplicationDocumentsDirectory();
-    return '${directory.path}/keyFinal.txt';
   }
 
   @override
@@ -78,31 +60,36 @@ void _saveUserProfile(BuildContext context) async {
       appBar: AppBar(
         title: Text('User Profile'),
         backgroundColor: Colors.grey[900],
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.info_outline),
+            onPressed: _showInfoDialog,
+          ),
+        ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
-              controller: _nameController,
-              decoration: InputDecoration(labelText: 'Name'),
+              controller: _usernameController,
+              decoration: InputDecoration(labelText: 'Username'),
             ),
             TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'New Password'),
+              obscureText: true,
             ),
-                        TextField(
-              controller: _apiKeyController,
-              decoration: InputDecoration(labelText: 'API Key'),
+            TextField(
+              controller: _confirmPasswordController,
+              decoration: InputDecoration(labelText: 'Confirm New Password'),
+              obscureText: true,
             ),
             SizedBox(height: 20),
             ElevatedButton(
-  onPressed: () {
-    _saveUserProfile(context); // Pass the context
-  },
-  child: Text('Save'),
-),
-
+              onPressed: _saveUserProfile,
+              child: Text('Save Profile'),
+            ),
           ],
         ),
       ),

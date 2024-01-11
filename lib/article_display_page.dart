@@ -24,6 +24,7 @@ class ArticleDisplayPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
+                  color: Colors.grey[900],
                 ),
               ),
               SizedBox(height: 10),
@@ -34,7 +35,7 @@ class ArticleDisplayPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              Text(article.content),
+              Text(article.content, style: TextStyle(color: Colors.grey[900])),
             ],
           ),
         ),

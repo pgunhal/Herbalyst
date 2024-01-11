@@ -7,20 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:chatgpt_client/saved_chat_page.dart'; // Import the SavedChatPage
 import 'package:chatgpt_client/secrets.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'article.dart';
 import 'article_display_page.dart';
-import 'article_list_page.dart'; // Import the Secrets class
+import 'article_list_page.dart';
+import 'login_page.dart'; // Import the Secrets class
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key});
+ final bool isLoggedIn;
+  const HomePage({Key? key, required this.isLoggedIn}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController _apiKeyController = TextEditingController();
 
   @override
   void initState() {
@@ -29,47 +31,12 @@ class _HomePageState extends State<HomePage> {
     // _loadApiKey(); // Call _loadApiKey to check and prompt if needed
   }
 
-Future<void> _promptApiKey() async {
-  final enteredApiKey = await showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Enter API Key'),
-        content: TextField(
-          controller: _apiKeyController,
-          decoration: const InputDecoration(
-            hintText: 'Enter your API key',
-          ),
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context, _apiKeyController.text);
-            },
-            child: const Text('Submit'),
-          ),
-        ],
-      );
-    },
-  );
-  // Update the Secrets class
-  if (enteredApiKey != null) {
-    Secrets.apiKey = enteredApiKey;
-    final directory = await getApplicationDocumentsDirectory();
-    final keyFile = File('${directory.path}/keyFinal.txt');
-    await keyFile.writeAsString(enteredApiKey);
-
-    // Reload the app to hide the "Enter API Key" button
-    // Use the key that you used when creating the MaterialApp widget
-    final key = UniqueKey();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => HomePage(key: key),
-      ),
-    );
+    void _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
   }
-}
+
 
 
   @override
@@ -112,39 +79,27 @@ Future<void> _promptApiKey() async {
 
             Container(
   padding: const EdgeInsets.all(16),
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        'Getting Started',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey[900]),
-      ),
+  // child: Column(
+  //   crossAxisAlignment: CrossAxisAlignment.start,
+  //   children: [
+  //     Text(
+  //       'Getting Started',
+  //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey[900]),
+  //     ),
      
-      SizedBox(height: 4), // Add some spacing between title and list
-      const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('1. Enter your OpenAI API key below.'),
-          Text('2. Use \'Chat\' to converse with an AI tea-making assistant.'),
-          Text('3. Save recipes using the copy button in the chat.'),
-          Text('4. You can access your recipes or add new ones in the \'Saved Chat\' section'),
-          Text('5. Use \'Browse Recipes\' to select or find herbs, and access available recipes using them.'),
-        ],
-      ),
-    ],
-  ),
+      // SizedBox(height: 4), // Add some spacing between title and list
+      // const Column(
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   children: [
+      //     Text('- Use \'Chat\' to converse with an AI tea-making assistant.', style: TextStyle(fontSize: 14, color: Colors.black)),
+      //     Text('- Save recipes using the copy button in the chat.', style: TextStyle(fontSize: 14, color: Colors.black)),
+      //     Text('- You can access your recipes or add new ones in the \'Saved Chat\' section', style: TextStyle(fontSize: 14, color: Colors.black)),
+      //     Text('- Use \'Browse Recipes\' to select or find herbs, and access available recipes using them.', style: TextStyle(fontSize: 14, color: Colors.black)),
+      //   ],
+      // ),
+  //   ],
+  // ),
 ),
-  if (Secrets.apiKey == Secrets.defApiKey)
-    Container(
-      padding: const EdgeInsets.all(16),
-        child: ElevatedButton(
-          onPressed: () => _promptApiKey(),
-          style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 33, 33, 33), // Black button color
-          ),
-        child: const Text('Enter API Key'),
-      ),
-    ),
   ],
   ),
   ),
@@ -190,6 +145,14 @@ drawer: Drawer(
           },
         ),
         ListTile(
+          leading: const Icon(Icons.article),
+          title: const Text('Articles'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ArticlesListPage()));
+          },
+        ),
+        ListTile(
           leading: const Icon(Icons.restaurant_menu),
           title: const Text('Browse Recipes'),
           onTap: () {
@@ -198,29 +161,35 @@ drawer: Drawer(
           },
         ),
         ListTile(
-          leading: const Icon(Icons.save_alt),
-          title: const Text('Saved Recipes'),
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) => SavedRecipesPage()));
-          },
-        ),
-       ListTile(
           leading: const Icon(Icons.food_bank),
-          title: const Text('Ingredients'),
+          title: const Text('Browse Ingredients'),
           onTap: () {
             Navigator.pop(context);
             Navigator.push(context, MaterialPageRoute(builder: (context) => SavedIngredientsPage()));
           },
         ),
         ListTile(
-          leading: const Icon(Icons.article),
-          title: const Text('Articles'),
+          leading: const Icon(Icons.save_alt),
+          title: const Text('Saved Notes'),
           onTap: () {
             Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ArticlesListPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SavedRecipesPage()));
           },
-        )
+        ),
+        ListTile(
+              leading: Icon(widget.isLoggedIn ? Icons.logout : Icons.login),
+              title: Text(widget.isLoggedIn ? 'Log out' : 'Login'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                if (widget.isLoggedIn) {
+                  _logout();
+                } else {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                }
+              },
+            ),
+
+
 
 
         
