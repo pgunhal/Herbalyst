@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:chatgpt_client/recipes_page.dart';
+import 'package:herbal_tea_assistant/recipes_page.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';

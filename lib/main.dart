@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:chatgpt_client/home_page.dart';
-import 'package:chatgpt_client/login_page.dart';
-import 'package:chatgpt_client/profile_page.dart';
-import 'package:chatgpt_client/recipes_page.dart';
-import 'package:chatgpt_client/ingredients_page.dart';
-import 'package:chatgpt_client/saved_ingredients_page.dart';
-import 'package:chatgpt_client/saved_chat_page.dart';
-import 'package:chatgpt_client/article_list_page.dart';
-import 'package:chatgpt_client/chat_page.dart';
-import 'package:chatgpt_client/api/chat_api.dart';
+import 'package:herbal_tea_assistant/home_page.dart';
+import 'package:herbal_tea_assistant/login_page.dart';
+import 'package:herbal_tea_assistant/profile_page.dart';
+import 'package:herbal_tea_assistant/recipes_page.dart';
+import 'package:herbal_tea_assistant/ingredients_page.dart';
+import 'package:herbal_tea_assistant/saved_ingredients_page.dart';
+import 'package:herbal_tea_assistant/saved_chat_page.dart';
+import 'package:herbal_tea_assistant/article_list_page.dart';
+import 'package:herbal_tea_assistant/chat_page.dart';
+import 'package:herbal_tea_assistant/api/chat_api.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

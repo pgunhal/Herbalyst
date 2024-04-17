@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'package:chatgpt_client/ingredients_page.dart';
-import 'package:chatgpt_client/profile_page.dart';
-import 'package:chatgpt_client/recipes_page.dart';
-import 'package:chatgpt_client/saved_ingredients_page.dart';
+import 'package:herbal_tea_assistant/ingredients_page.dart';
+import 'package:herbal_tea_assistant/profile_page.dart';
+import 'package:herbal_tea_assistant/recipes_page.dart';
+import 'package:herbal_tea_assistant/saved_ingredients_page.dart';
 import 'package:flutter/material.dart';
-import 'package:chatgpt_client/saved_chat_page.dart'; // Import the SavedChatPage
-import 'package:chatgpt_client/secrets.dart';
+import 'package:herbal_tea_assistant/saved_chat_page.dart'; // Import the SavedChatPage
+import 'package:herbal_tea_assistant/secrets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
