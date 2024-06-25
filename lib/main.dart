@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:herbal_tea_assistant/disclaimer_provider.dart';
+import 'package:herbal_tea_assistant/mood_tracker_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:herbal_tea_assistant/home_page.dart';
@@ -92,6 +93,8 @@ class HerbalTeaApp extends StatelessWidget {
         '/savedChat': (context) => SavedRecipesPage(),
         '/articlesList': (context) => ArticlesListPage(),
         '/chat': (context) => ChatPage(chatApi: ChatApi()),
+        '/moodTracker': (context) => MoodTrackerPage(),
+
       },
     );
   }

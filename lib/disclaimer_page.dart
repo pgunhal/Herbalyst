@@ -209,8 +209,7 @@ class DisclaimerPage extends StatelessWidget {
     );
   }
 }
-
-//TODO ADD THE OTHER SECTIONS OF THE TOC!!!!! ADD A NEW FEATURE TO APP
+//ADD A NEW FEATURE TO APP
 //APP might have crashed, best to build new? 
 
 

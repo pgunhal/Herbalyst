@@ -263,6 +263,16 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pushNamed(context, '/chat');
                 },
               ),
+
+              ListTile(
+                leading: const Icon(Icons.mood),
+                title: const Text('Mood Tracker'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/moodTracker');
+                },
+              ),
+
               ListTile(
                 leading: const Icon(Icons.article),
                 title: const Text('Articles'),
