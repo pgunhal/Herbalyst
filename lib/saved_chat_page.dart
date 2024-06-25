@@ -77,6 +77,7 @@ void _saveNotes() async {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Saved Notes'),
+          foregroundColor: Colors.white,
         backgroundColor: Colors.grey[900],
           actions: <Widget>[
           IconButton(

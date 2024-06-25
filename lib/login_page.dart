@@ -27,14 +27,14 @@ class _LoginPageState extends State<LoginPage> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
 
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(isLoggedIn: false)));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
     } else {
       // Check credentials for login
       String? storedUsername = await _storage.read(key: 'username');
       String? storedPassword = await _storage.read(key: 'password');
 
       if (username == storedUsername && password == storedPassword) {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(isLoggedIn: true,)));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid credentials')));
       }
@@ -46,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_isRegistering ? 'Register' : 'Login'),
+          foregroundColor: Colors.white,
         backgroundColor: Colors.grey[900],
       ),
       body: Padding(

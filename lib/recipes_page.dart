@@ -123,6 +123,7 @@ Map<String, List<String>> herbalTeaRecipes = {
     return Scaffold(
       appBar: AppBar(
         title: Text('Browse Recipes'),
+          foregroundColor: Colors.white,
         backgroundColor: Colors.grey[900],
          actions: <Widget>[
           IconButton(

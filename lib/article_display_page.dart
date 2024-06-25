@@ -11,6 +11,7 @@ class ArticleDisplayPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(article.title),
+          foregroundColor: Colors.white,
         backgroundColor: Colors.grey[900],
       ),
       body: Padding(

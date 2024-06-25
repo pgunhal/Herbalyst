@@ -20,6 +20,8 @@ dependencies:
   flutter_secure_storage: ^5.0.0
   flutter_bloc: ^8.0.1 # Check for the latest version
   equatable: ^2.0.3
+  provider: ^6.0.0
+
 
 
 

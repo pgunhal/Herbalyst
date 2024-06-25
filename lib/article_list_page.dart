@@ -21,7 +21,7 @@ class _ArticlesListPageState extends State<ArticlesListPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('User Profile Info'),
+            title: Text('Articles'),
             content: Text('Learn about the benefits of herbal tea, and other useful information in our curated collection of articles.'),
             actions: <Widget>[
               TextButton(
@@ -41,6 +41,7 @@ class _ArticlesListPageState extends State<ArticlesListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Articles'),
+          foregroundColor: Colors.white,
         backgroundColor: Colors.grey[900],
          actions: <Widget>[
           IconButton(

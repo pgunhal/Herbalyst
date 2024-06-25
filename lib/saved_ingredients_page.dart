@@ -78,6 +78,7 @@ class _SavedIngredientsPageState extends State<SavedIngredientsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Ingredients'),
+          foregroundColor: Colors.white,
         backgroundColor: Colors.grey[900],
         actions: <Widget>[
           IconButton(

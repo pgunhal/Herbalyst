@@ -118,6 +118,7 @@ void _openWalmart(String herb) async {
     return Scaffold(
       appBar: AppBar(
         title: Text('Browse Ingredients'),
+          foregroundColor: Colors.white,
         backgroundColor: Colors.grey[900],
           actions: <Widget>[
           IconButton(
@@ -154,7 +155,11 @@ void _openWalmart(String herb) async {
                     ExpansionPanel(
                       headerBuilder: (BuildContext context, bool isExpanded) {
                         return ListTile(
-                          title: Text('Selected Herbs'),
+                          title: Text('Selected Herbs', 
+                           style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
                         );
                       },
                       body: Column(
