@@ -6,7 +6,7 @@ class ChatApi {
   static const _model = 'gpt-3.5-turbo';
 
   ChatApi() {
-    final apiKey = Secrets.apiKey; // Use the default API key as a backup
+    const apiKey = Secrets.apiKey; // Use the default API key as a backup
     OpenAI.apiKey = apiKey;
   }
 

@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'recipe_detail_page.dart';
 import 'tea_data.dart';
-//TODO functionality of this page WORKS
-//need to change UI of appbar for a few pages, etc.
-//need to add a few more moods AND change the teas for each mood to make sure there is more. 
-//add a RANDOM for discovery. 
+
 class MoodTrackerPage extends StatefulWidget {
+  const MoodTrackerPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MoodTrackerPageState createState() => _MoodTrackerPageState();
 }
 
 class _MoodTrackerPageState extends State<MoodTrackerPage> {
-  String _selectedMood = '';
   String? _savedMood;
   late SharedPreferences _prefs;
 
@@ -22,6 +21,7 @@ class _MoodTrackerPageState extends State<MoodTrackerPage> {
     super.initState();
     _initializePrefs();
   }
+
 
   Future<void> _initializePrefs() async {
     _prefs = await SharedPreferences.getInstance();
@@ -32,7 +32,6 @@ class _MoodTrackerPageState extends State<MoodTrackerPage> {
 
   Future<void> _saveMood(String mood) async {
     setState(() {
-      _selectedMood = mood;
       _prefs.setString('selectedMood', mood);
       _savedMood = mood;
     });
@@ -53,22 +52,49 @@ class _MoodTrackerPageState extends State<MoodTrackerPage> {
     }
   }
 
+  void _showInfoDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Tea Recommendations'),
+          content: const Text('Select a mood, aspiration, or pain to get custom tea recommendations. Click on a tea to view the full recipe and health benefits.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mood Tracker'),
+        title: const Text('Tea Recommendations'),
+          foregroundColor: Colors.white,
         backgroundColor: Colors.grey[900],
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: _showInfoDialog,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text(
+            const Text(
               'How are you feeling right now?',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Wrap(
               spacing: 10.0,
               children: [
@@ -78,18 +104,18 @@ class _MoodTrackerPageState extends State<MoodTrackerPage> {
                 _moodButton('Relaxed', Icons.sentiment_satisfied),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             if (_savedMood != null) ...[
               Text(
                 'Your saved mood: $_savedMood',
-                style: TextStyle(fontSize: 18, color: Colors.black),
+                style: const TextStyle(fontSize: 18, color: Colors.black),
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Recommended Teas:',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ..._teaRecommendations(_savedMood!).map((tea) {
                 return InkWell(
                   onTap: () {
@@ -108,7 +134,7 @@ class _MoodTrackerPageState extends State<MoodTrackerPage> {
                     child: ListTile(
                       title: Text(
                         tea,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(
                         herbalTeaRecipes[tea]!['Ingredients'].join(', '),
@@ -132,8 +158,10 @@ class _MoodTrackerPageState extends State<MoodTrackerPage> {
       style: ElevatedButton.styleFrom(
         // primary: Colors.deepOrange,
         // onPrimary: Colors.white,
-        textStyle: TextStyle(fontSize: 16),
+        textStyle: const TextStyle(fontSize: 16),
       ),
     );
   }
+
+  
 }

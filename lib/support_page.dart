@@ -1,5 +1,6 @@
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SupportPage extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class _SupportPageState extends State<SupportPage> {
     super.initState();
   }
   void _contactSupport() {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please reach out to support@herbalyst.com with any inquiries or support queries.')));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please reach out to support@herbalyst.com with any inquiries or support queries.')));
 
     // if (_passwordController.text == _confirmPasswordController.text) {
     //   await _storage.write(key: 'username', value: _usernameController.text);
@@ -28,12 +29,12 @@ class _SupportPageState extends State<SupportPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Support'),
+          title: const Text('Support'),
           // backgroundColor: Colors.white,
-          content: Text('Find information for app support and reporting bugs here.'),
+          content: const Text('Find information for app support and reporting bugs here.'),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -48,42 +49,42 @@ class _SupportPageState extends State<SupportPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('App Support'),
+        title: const Text('App Support'),
           foregroundColor: Colors.white,
         backgroundColor: Colors.grey[900],
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline),
             onPressed: _showInfoDialog,
           ),
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-             Text('Having fun?', 
+             const Text('Having fun?', 
               style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25)
             ),
-            Text('If you are enjoying Herbalyst, please rate us on the App Store and leave a review!', 
+            const Text('If you are enjoying Herbalyst, please rate us on the App Store and leave a review!', 
               style: TextStyle(color: Colors.black, fontWeight: FontWeight.w300)
             ),
-            Text('Questions?', 
+            const Text('Questions?', 
               style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25,)
             ),
-            Text('If you are unsure about how to use any features in the app, click on the information button in the top right corner of every screen.', 
+            const Text('If you are unsure about how to use any features in the app, click on the information button in the top right corner of every screen.', 
               style: TextStyle(color: Colors.black, fontWeight: FontWeight.w300)
             ),
-            Text('Bugs?', 
+            const Text('Bugs?', 
               style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25)
             ),
-            Text('If you believe a feature is not working properly or find any other issues with the app, submit a bug report below and our support team will reach out with further steps.', 
+            const Text('If you believe a feature is not working properly or find any other issues with the app, submit a bug report below and our support team will reach out with further steps.', 
               style: TextStyle(color: Colors.black, fontWeight: FontWeight.w300)
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _contactSupport,
-              child: Text('Contact Support'),
+              child: const Text('Contact Support'),
             ),
           ],
         ),

@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -57,11 +59,11 @@ void _saveNotes() async {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Saved Notes'),
-          content: Text('View saved messages from chat here. You can also add custom notes. Swipe left to delete notes.'),
+          title: const Text('Saved Notes'),
+          content: const Text('View saved messages from chat here. You can also add custom notes. Swipe left to delete notes.'),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -81,7 +83,7 @@ void _saveNotes() async {
         backgroundColor: Colors.grey[900],
           actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline),
             onPressed: _showInfoDialog,
           ),
         ],

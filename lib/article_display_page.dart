@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'article.dart';  // Make sure to import the Article model
 
@@ -7,6 +9,7 @@ class ArticleDisplayPage extends StatelessWidget {
   ArticleDisplayPage({required this.article});
 
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -28,14 +31,14 @@ class ArticleDisplayPage extends StatelessWidget {
                   color: Colors.grey[900],
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 _formatDate(article.datePosted.toLocal()).toString(),
                 style: TextStyle(
                   color: Colors.grey[600],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(article.content, style: TextStyle(color: Colors.grey[900])),
             ],
           ),

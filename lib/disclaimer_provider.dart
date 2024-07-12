@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -11,21 +13,23 @@ class DisclaimerProvider with ChangeNotifier {
     _loadDisclaimerStatus();
   }
 
-  void _loadDisclaimerStatus() async {
+  Future<void> _loadDisclaimerStatus() async {
     String? isAccepted = await _storage.read(key: 'disclaimerAccepted');
     _isDisclaimerAccepted = isAccepted == 'true';
     notifyListeners();
   }
 
-  void acceptDisclaimer() async {
-    _isDisclaimerAccepted = true;
-    await _storage.write(key: 'disclaimerAccepted', value: 'true');
+  void setDisclaimerStatus(bool status) async {
+    _isDisclaimerAccepted = status;
+    await _storage.write(key: 'disclaimerAccepted', value: status.toString());
     notifyListeners();
   }
 
+  void acceptDisclaimer() async {
+    setDisclaimerStatus(true);
+  }
+
   void revokeDisclaimer() async {
-    _isDisclaimerAccepted = false;
-    await _storage.write(key: 'disclaimerAccepted', value: 'false');
-    notifyListeners();
+    setDisclaimerStatus(false);
   }
 }

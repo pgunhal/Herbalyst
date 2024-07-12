@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -58,11 +60,11 @@ class _SavedIngredientsPageState extends State<SavedIngredientsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('My Ingredients'),
-          content: Text('Save ingredients in this shopping list. Items are automatically crossed out when selected. Swipe left to delete. Use the \'Browse Ingredients\' icon to look up commonly used herbs.'),
+          title: const Text('My Ingredients'),
+          content: const Text('Save ingredients in this shopping list. Items are automatically crossed out when selected. Swipe left to delete. Use the \'Browse Ingredients\' icon to look up commonly used herbs.'),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -82,7 +84,7 @@ class _SavedIngredientsPageState extends State<SavedIngredientsPage> {
         backgroundColor: Colors.grey[900],
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline),
             onPressed: _showInfoDialog,
           ),
         ],
@@ -138,7 +140,7 @@ class _SavedIngredientsPageState extends State<SavedIngredientsPage> {
                 ),
               );
             },
-            child: Text('Browse Ingredients'),
+            child: const Text('Browse Ingredients'),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

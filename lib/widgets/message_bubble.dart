@@ -17,12 +17,12 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
- Color primaryColor = Color.fromARGB(255, 33, 33, 33);
-  Color accentColor = Color.fromRGBO(239, 108, 0, 1);
+ Color primaryColor = const Color.fromARGB(255, 33, 33, 33);
+  Color accentColor = const Color.fromRGBO(239, 108, 0, 1);
   final bubbleColor = isUserMessage
       ? primaryColor.withOpacity(0.4) // Use primaryColor instead of colorScheme.primary
       : accentColor.withOpacity(0.8); // Use accentColor instead of colorScheme.secondary
-  final textColor = Colors.black;
+  const textColor = Colors.black;
   
   return Container(
     margin: const EdgeInsets.all(8),
@@ -40,7 +40,7 @@ class MessageBubble extends StatelessWidget {
             children: [
               Text(
                 isUserMessage ? 'You' : 'AI',
-                style: TextStyle(fontWeight: FontWeight.bold, color: textColor),
+                style: const TextStyle(fontWeight: FontWeight.bold, color: textColor),
               ),
               if (showSaveButton)
                 IconButton(
