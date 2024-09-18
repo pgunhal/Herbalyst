@@ -72,7 +72,8 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
           ),
         ],
       ),
-      body: Padding(
+      body: _accepted ? SizedBox(child: Text('hi')) : 
+      Padding(
         padding: const EdgeInsets.all(16.0),
         child: Consumer<DisclaimerProvider>(
           builder: (context, disclaimerProvider, child) {
