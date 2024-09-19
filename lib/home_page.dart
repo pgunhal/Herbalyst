@@ -43,10 +43,14 @@ class _HomePageState extends State<HomePage> {
  void _checkDisclaimerStatus() async {
     String? isAccepted = await _storage.read(key: 'disclaimerAccepted');
     if (isAccepted != 'true') {
+      // print('ISACCEPTED VALUE IS _______');
+      // print(isAccepted);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => DisclaimerPage()),
       );
+    } else {
+      // print('true!');
     }
   }
 
