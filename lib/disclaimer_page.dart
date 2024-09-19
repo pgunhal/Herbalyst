@@ -58,6 +58,12 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
     );
   }
 
+  Widget pushHome() {
+    print('pushing home');
+    Navigator.pushReplacementNamed(context, '/home');
+    return SizedBox();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +78,7 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
           ),
         ],
       ),
-      body: _accepted ? SizedBox(child: Text('hi')) : 
+      body:
       Padding(
         padding: const EdgeInsets.all(16.0),
         child: Consumer<DisclaimerProvider>(
