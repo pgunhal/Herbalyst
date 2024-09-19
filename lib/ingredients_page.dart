@@ -1,5 +1,3 @@
-// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, deprecated_member_use, use_build_context_synchronously
-
 import 'dart:io';
 
 import 'package:herbal_tea_assistant/recipes_page.dart';
@@ -19,7 +17,7 @@ class _IngredientsPageState extends State<IngredientsPage> {
 'Alfalfa','Aloe Vera','Anise','Basil','Blackberry Leaf','Blueberry Leaf','Borage','Calendula','Cardamom','Catnip','Chamomile','Chervil','Chives','Cilantro','Cilantro','Cinnamon','Clove','Comfrey','Coriander','Dandelion','Dill','Echinacea','Elderberry','Fennel','Feverfew','Garlic','Ginger','Ginseng','Goldenseal','Gotu Kola','Hibiscus','Hyssop','Lavender','Lavender','Lemon Balm','Lemon Peel','Lemongrass','Licorice Root','Marjoram','Mint','Nettle','Orange Peel','Oregano','Parsley','Parsley','Passionflower','Peppermint','Plantain','Raspberry Leaf','Rooibos','Rose Petals','Rosemary','Sage','Sage','Spearmint','St. John\'s Wort','Thyme','Turmeric','Turmeric','Valerian','Vanilla Bean','Yarrow'
   ];
 
-  final TextEditingController _searchController = TextEditingController();
+  TextEditingController _searchController = TextEditingController();
   List<String> filteredHerbs = [];
 
   bool _isExpanded = false;
@@ -45,12 +43,12 @@ class _IngredientsPageState extends State<IngredientsPage> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text('Unable to open Instacart.'),
+          title: Text('Error'),
+          content: Text('Unable to open Instacart.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+              child: Text('OK'),
             ),
           ],
         ),
@@ -81,12 +79,12 @@ void _openWalmart(String herb) async {
    showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text('Unable to open Walmart.'),
+          title: Text('Error'),
+          content: Text('Unable to open Walmart.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+              child: Text('OK'),
             ),
           ],
         ),
@@ -99,11 +97,11 @@ void _openWalmart(String herb) async {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Browse Ingredients'),
-          content: const Text('Look up commonly used herbs here. Use the \'Selected Herbs\' widget to view selected herbs. These herbs can be purchased on Instacart and Walmart, or saved using the respective icons. Use the \'Show Recipes\' icon to view recipes.'),
+          title: Text('Browse Ingredients'),
+          content: Text('Look up commonly used herbs here. Use the \'Selected Herbs\' widget to view selected herbs. These herbs can be purchased on Instacart and Walmart, or saved using the respective icons. Use the \'Show Recipes\' icon to view recipes.'),
           actions: <Widget>[
             TextButton(
-              child: const Text('OK'),
+              child: Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -119,12 +117,12 @@ void _openWalmart(String herb) async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Browse Ingredients'),
+        title: Text('Browse Ingredients'),
           foregroundColor: Colors.white,
         backgroundColor: Colors.grey[900],
           actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.info_outline),
+            icon: Icon(Icons.info_outline),
             onPressed: _showInfoDialog,
           ),
         ],
@@ -135,7 +133,7 @@ void _openWalmart(String herb) async {
             padding: const EdgeInsets.all(16.0),
             child: TextField(
               controller: _searchController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Search Herbs',
                 prefixIcon: Icon(Icons.search),
               ),
@@ -156,7 +154,7 @@ void _openWalmart(String herb) async {
                   children: [
                     ExpansionPanel(
                       headerBuilder: (BuildContext context, bool isExpanded) {
-                        return const ListTile(
+                        return ListTile(
                           title: Text('Selected Herbs', 
                            style: TextStyle(
                                 color: Colors.white,
@@ -169,7 +167,7 @@ void _openWalmart(String herb) async {
                           return ListTile(
                             title: Text(
                               herb,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -177,19 +175,19 @@ void _openWalmart(String herb) async {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  icon: const Icon(Icons.shopping_cart),
+                                  icon: Icon(Icons.shopping_cart),
                                   onPressed: () {
                                     _openInstacart(herb);
                                   },
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.shopping_bag),
+                                  icon: Icon(Icons.shopping_bag),
                                   onPressed: () {
                                     _openWalmart(herb);
                                   },
                                 ),
                                  IconButton(
-                                  icon: const Icon(Icons.save_alt),
+                                  icon: Icon(Icons.save_alt),
                                   onPressed: () {
                                     _saveHerb(herb);
                                   },
@@ -203,7 +201,7 @@ void _openWalmart(String herb) async {
                     ),
                   ],
                 ),
-                const Divider(),
+                Divider(),
                 ...filteredHerbs.map((herb) {
                   return CheckboxListTile(
                     title: Text(herb),
@@ -233,7 +231,7 @@ void _openWalmart(String herb) async {
                 ),
               );
             },
-            child: const Text('Show Recipes'),
+            child: Text('Show Recipes'),
           ),
         ],
       ),

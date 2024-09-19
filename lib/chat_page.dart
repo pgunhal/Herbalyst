@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
-
 import 'package:herbal_tea_assistant/api/chat_api.dart';
 import 'package:herbal_tea_assistant/models/chat_message.dart';
 import 'package:herbal_tea_assistant/secrets.dart';
@@ -61,16 +59,16 @@ class _ChatPageState extends State<ChatPage> {
     final confirmed = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Clear Chat'),
-        content: const Text('Are you sure you want to clear the chat? This action cannot be undone.'),
+        title: Text('Clear Chat'),
+        content: Text('Are you sure you want to clear the chat? This action cannot be undone.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text('Cancel'),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Clear'),
+            child: Text('Clear'),
           ),
         ],
       ),
@@ -85,11 +83,11 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  // void _scrollToBottom() {
-  //   if (_scrollController.hasClients) {
-  //     _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-  //   }
-  // }
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    }
+  }
 
   
   void _showInfoDialog() {
@@ -97,11 +95,11 @@ class _ChatPageState extends State<ChatPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Chat'),
-          content: const Text('Ask your personal AI assistant for recommendations, tailored recipes, and more. Save your favorite messages by pressing the \'save\' button. You can view saved messages in \'Saved Notes\'.'),
+          title: Text('Chat'),
+          content: Text('Ask your personal AI assistant for recommendations, tailored recipes, and more. Save your favorite messages by pressing the \'save\' button. You can view saved messages in \'Saved Notes\'.'),
           actions: <Widget>[
             TextButton(
-              child: const Text('OK'),
+              child: Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -118,7 +116,7 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         foregroundColor: Colors.white,
         backgroundColor: Colors.grey[900], // Set background color
-        title: const Text(
+        title: Text(
           'Chat',
           style: TextStyle(
             fontWeight: FontWeight.bold,// Set text color
@@ -127,12 +125,12 @@ class _ChatPageState extends State<ChatPage> {
         ),
         actions: [
            IconButton(
-            icon: const Icon(Icons.info_outline),
+            icon: Icon(Icons.info_outline),
             onPressed: _showInfoDialog,
           ),
           IconButton(
             onPressed: _clearChat,
-            icon: const Icon(Icons.delete),
+            icon: Icon(Icons.delete),
           ),
         ],
       ),
