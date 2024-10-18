@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:herbal_tea_assistant/ingredients_page.dart';
 import 'package:herbal_tea_assistant/support_page.dart';
 import 'package:herbal_tea_assistant/disclaimer_page.dart';
@@ -13,10 +12,8 @@ import 'package:herbal_tea_assistant/secrets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'article.dart';
-import 'article_display_page.dart';
 import 'article_list_page.dart';
-import 'login_page.dart'; // Import the Secrets class
+// Import the Secrets class
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
