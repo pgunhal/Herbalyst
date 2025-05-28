@@ -4,7 +4,6 @@ import 'package:herbal_tea_assistant/mood_tracker_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:herbal_tea_assistant/home_page.dart';
-import 'package:herbal_tea_assistant/login_page.dart';
 import 'package:herbal_tea_assistant/support_page.dart';
 import 'package:herbal_tea_assistant/disclaimer_page.dart';
 
@@ -69,7 +68,7 @@ void main() async {
 class HerbalTeaApp extends StatelessWidget {
   final bool isLoggedIn;
 
-  HerbalTeaApp({required this.isLoggedIn});
+  const HerbalTeaApp({required this.isLoggedIn});
 
   @override
   Widget build(BuildContext context) {
@@ -77,17 +76,17 @@ class HerbalTeaApp extends StatelessWidget {
       debugShowCheckedModeBanner: false, // Disable debug banner
       title: 'Herbalyst',
       theme: ThemeData(
-        textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.white)),
+        textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.white)),
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepOrange).copyWith(surface: Colors.grey[900]),
         scaffoldBackgroundColor: Colors.white,
         dialogBackgroundColor: Colors.grey,
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => HomePage(),
+        '/': (context) => const HomePage(),
         '/support': (context) => SupportPage(),
         '/disclaimer': (context) => DisclaimerPage(),
-        '/recipes': (context) => RecipesPage(selectedHerbs: []),
+        '/recipes': (context) => RecipesPage(selectedHerbs: const []),
         '/ingredients': (context) => IngredientsPage(),
         '/savedIngredients': (context) => SavedIngredientsPage(),
         '/savedChat': (context) => SavedRecipesPage(),

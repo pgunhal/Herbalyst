@@ -1,9 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:herbal_tea_assistant/api/chat_api.dart';
 import 'package:herbal_tea_assistant/models/chat_message.dart';
 import 'package:herbal_tea_assistant/secrets.dart';
+import 'package:herbal_tea_assistant/widgets/list_tiles.dart';
 import 'package:herbal_tea_assistant/widgets/message_bubble.dart';
 import 'package:herbal_tea_assistant/widgets/message_composer.dart';
-import 'package:dart_openai/openai.dart';
+import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -51,7 +54,7 @@ class _ChatPageState extends State<ChatPage> {
       });
       OpenAI.apiKey = Secrets.apiKey;
     } catch (e) {
-      print('Error loading chat messages: $e');
+      // print('Error loading chat messages: $e');
     }
   }
 
@@ -59,16 +62,16 @@ class _ChatPageState extends State<ChatPage> {
     final confirmed = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Clear Chat'),
-        content: Text('Are you sure you want to clear the chat? This action cannot be undone.'),
+        title: const Text('Clear Chat'),
+        content: const Text('Are you sure you want to clear the chat? This action cannot be undone.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: Text('Clear'),
+            child: const Text('Clear'),
           ),
         ],
       ),
@@ -83,11 +86,6 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void _scrollToBottom() {
-    if (_scrollController.hasClients) {
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-    }
-  }
 
   
   void _showInfoDialog() {
@@ -95,11 +93,11 @@ class _ChatPageState extends State<ChatPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Chat'),
-          content: Text('Ask your personal AI assistant for recommendations, tailored recipes, and more. Save your favorite messages by pressing the \'save\' button. You can view saved messages in \'Saved Notes\'.'),
+          title: const Text('Chat'),
+          content: const Text('Ask your personal AI assistant for recommendations, tailored recipes, and more. Save your favorite messages by pressing the \'save\' button. You can view saved messages in \'Saved Notes\'.'),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -115,26 +113,29 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Colors.white,
-        backgroundColor: Colors.grey[900], // Set background color
-        title: Text(
+        backgroundColor: Colors.grey[900], 
+        title: const Text(
           'Chat',
           style: TextStyle(
-            fontWeight: FontWeight.bold,// Set text color
+            fontWeight: FontWeight.bold,
             fontSize: 24,
           ),
         ),
         actions: [
            IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline),
             onPressed: _showInfoDialog,
           ),
           IconButton(
             onPressed: _clearChat,
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
           ),
         ],
       ),
-body: Column(
+      drawer: Drawer(
+        child: buildDrawer(context),
+      ),
+      body: Column(
         children: [
           Expanded(
             child: ListView(
@@ -168,10 +169,9 @@ Future<void> _onSubmitted(String message) async {
 
   try {
     final response = await widget.chatApi.completeChat(_messages);
-        print('API Response: $response'); // Debug: Print the full response
-
+    final responseText = response!.first.text!.isNotEmpty ? response.first.text : "No response";
     setState(() {
-      _messages.add(ChatMessage(response, false));
+      _messages.add(ChatMessage(responseText!, false));
       _awaitingResponse = false;
     });
     _saveChatMessages(); // Save the updated chat messages
@@ -192,7 +192,9 @@ Future<void> _saveChatMessages() async {
     final chatMessages = _messages.map((msg) => '${msg.isUserMessage ? 'user' : 'bot'}:${msg.content}').toList();
     await prefs.setStringList('chat_messages', chatMessages);
   } catch (e) {
-    print('Error saving chat messages: $e');
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
   }
 }
 
@@ -212,4 +214,19 @@ Future<void> _saveChatMessages() async {
       // print('Error saving notes: $e');
     }
   }
+
+
+  String extractText(String input) {
+  // Use a regular expression to find the "text: " pattern and extract everything after it
+  final RegExp regex = RegExp(r'text:\s(.*?)(?=\))');
+  final match = regex.firstMatch(input);
+
+  if (match != null) {
+    // Return the matched text, trimming any leading or trailing whitespace
+    return match.group(1)?.trim() ?? '';
+  } else {
+    // If no match is found, return the original input
+    return input;
+  }
+}
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class DisclaimerProvider with ChangeNotifier {
-  final FlutterSecureStorage _storage = FlutterSecureStorage();
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
   bool _isDisclaimerAccepted = false;
 
   bool get isDisclaimerAccepted => _isDisclaimerAccepted;

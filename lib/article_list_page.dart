@@ -1,4 +1,7 @@
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
+import 'package:herbal_tea_assistant/widgets/list_tiles.dart';
 import 'article.dart';
 import 'article_display_page.dart';
 import 'file_utils.dart';  // If you named the utils differently, adjust the import
@@ -14,6 +17,7 @@ class _ArticlesListPageState extends State<ArticlesListPage> {
   void initState() {
     super.initState();
     futureArticles = loadArticlesFromFiles();
+    // print(futureArticles);
   }
 
     void _showInfoDialog() {
@@ -21,11 +25,11 @@ class _ArticlesListPageState extends State<ArticlesListPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Articles'),
-            content: Text('Learn about the benefits of herbal tea, and other useful information in our curated collection of articles.'),
+            title: const Text('Articles'),
+            content: const Text('Learn about the benefits of herbal tea, and other useful information in our curated collection of articles.'),
             actions: <Widget>[
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -40,15 +44,18 @@ class _ArticlesListPageState extends State<ArticlesListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Articles'),
+        title: const Text('Articles'),
           foregroundColor: Colors.white,
         backgroundColor: Colors.grey[900],
          actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline),
             onPressed: _showInfoDialog,
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: buildDrawer(context),
       ),
       body: FutureBuilder<List<Article>>(
         future: futureArticles,
@@ -63,10 +70,11 @@ class _ArticlesListPageState extends State<ArticlesListPage> {
               itemCount: articles.length,
               itemBuilder: (context, index) {
                 return Card(
-                  margin: EdgeInsets.all(10.0),
+                  margin: const EdgeInsets.all(7.5),
+                  color: const Color.fromARGB(255, 255, 204, 188),
                   child: ListTile(
-                    title: Text(articles[index].title),
-                    subtitle: Text(_formatDate(articles[index].datePosted)),
+                    title: Text(articles[index].title, style: const TextStyle(color:Colors.black)),
+                    subtitle: Text(_formatDate(articles[index].datePosted), style: const TextStyle(color:Colors.black)),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -80,7 +88,7 @@ class _ArticlesListPageState extends State<ArticlesListPage> {
               },
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),

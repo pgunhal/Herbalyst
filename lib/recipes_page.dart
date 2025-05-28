@@ -1,5 +1,8 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:herbal_tea_assistant/widgets/list_tiles.dart';
 import 'package:path_provider/path_provider.dart';
 import 'tea_data.dart';
 import 'recipe_detail_page.dart';
@@ -7,16 +10,20 @@ import 'recipe_detail_page.dart';
 class RecipesPage extends StatefulWidget {
   final List<String> selectedHerbs;
 
-  RecipesPage({required this.selectedHerbs});
-
+  const RecipesPage({required this.selectedHerbs});
   @override
-  _RecipesPageState createState() => _RecipesPageState();
+  // ignore: no_logic_in_create_state
+  _RecipesPageState createState() => _RecipesPageState(selectedHerbs: selectedHerbs);
 }
 
 class _RecipesPageState extends State<RecipesPage> {
-  String _searchQuery = '';
-  TextEditingController _searchController = TextEditingController();
+    final List<String> selectedHerbs;
+    
+  _RecipesPageState({required this.selectedHerbs});
 
+  String _searchQuery = '';
+  final TextEditingController _searchController = TextEditingController();
+  
   @override
   void initState() {
     super.initState();
@@ -34,14 +41,17 @@ class _RecipesPageState extends State<RecipesPage> {
   }
 
   List<MapEntry<String, Map<String, dynamic>>> _getFilteredRecipes() {
-    if (_searchQuery.isEmpty) {
-      return herbalTeaRecipes.entries.toList();
-    } else {
-      return herbalTeaRecipes.entries
-        .where((entry) => entry.key.toLowerCase().contains(_searchQuery) ||
-                          entry.value['Ingredients'].any((ingredient) => ingredient.toLowerCase().contains(_searchQuery)))
+    return herbalTeaRecipes.entries
+        .where((entry) {
+          final recipeIngredients = entry.value['Ingredients'] as List<String>;
+          final matchesSearchQuery = entry.key.toLowerCase().contains(_searchQuery) ||
+              recipeIngredients.any((ingredient) => ingredient.toLowerCase().contains(_searchQuery));
+          final matchesSelectedHerbs = widget.selectedHerbs.isEmpty ||
+              widget.selectedHerbs.any((herb) => recipeIngredients.contains(herb));
+
+          return matchesSearchQuery && matchesSelectedHerbs;
+        })
         .toList();
-    }
   }
 
   @override
@@ -50,22 +60,23 @@ class _RecipesPageState extends State<RecipesPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Browse Recipes'),
+        title: const Text('Browse Recipes'),
         foregroundColor: Colors.white,
         backgroundColor: Colors.grey[900],
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline),
             onPressed: () {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Browse recipes'),
-                    content: Text('Browse a wide range of custom herbal teas, sorted by ingredients. Search for teas matching your preferences at the top. Save your favorites for later using the save button. You can view saved recipes in \'Saved Notes\'.'),
+                    title: const Text('Browse recipes'),
+                    content: const Text(
+                        'Browse a wide range of custom herbal teas, sorted by ingredients. Search for teas matching your preferences at the top. Save your favorites for later using the save button. You can view saved recipes in \'Saved Notes\'.'),
                     actions: <Widget>[
                       TextButton(
-                        child: Text('OK'),
+                        child: const Text('OK'),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -78,14 +89,17 @@ class _RecipesPageState extends State<RecipesPage> {
           ),
         ],
       ),
+      drawer: Drawer(
+        child: buildDrawer(context),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: TextField(
               controller: _searchController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Search Ingredients',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
@@ -104,12 +118,12 @@ class _RecipesPageState extends State<RecipesPage> {
                   title: Text(recipeTitle),
                   subtitle: Text(ingredients.join(', ')),
                   trailing: IconButton(
-                    icon: Icon(Icons.save_alt),
+                    icon: const Icon(Icons.save_alt),
                     onPressed: () {
                       final recipeText = '$recipeTitle\nIngredients: ${ingredients.join(', ')}';
                       _saveNotes(recipeText);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Recipe saved')),
+                        const SnackBar(content: Text('Recipe saved')),
                       );
                     },
                   ),

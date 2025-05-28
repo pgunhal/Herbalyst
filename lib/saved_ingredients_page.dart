@@ -1,4 +1,7 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
+import 'package:herbal_tea_assistant/widgets/list_tiles.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
@@ -10,7 +13,7 @@ class SavedIngredientsPage extends StatefulWidget {
 }
 
 class _SavedIngredientsPageState extends State<SavedIngredientsPage> {
-  final TextEditingController _textEditingController = TextEditingController();
+  // final TextEditingController _textEditingController = TextEditingController();
   final List<String> _notes = [];
 
   @override
@@ -58,11 +61,11 @@ class _SavedIngredientsPageState extends State<SavedIngredientsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('My Ingredients'),
-          content: Text('Save ingredients in this shopping list. Items are automatically crossed out when selected. Swipe left to delete. Use the \'Browse Ingredients\' icon to look up commonly used herbs.'),
+          title: const Text('Saved Ingredients'),
+          content: const Text('Save ingredients in this shopping list. Items are automatically crossed out when selected. Swipe left to delete. Use the \'Browse Ingredients\' icon to look up commonly used herbs.'),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -82,10 +85,13 @@ class _SavedIngredientsPageState extends State<SavedIngredientsPage> {
         backgroundColor: Colors.grey[900],
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline),
             onPressed: _showInfoDialog,
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: buildDrawer(context),
       ),
       body: Column(
         children: [
@@ -129,7 +135,9 @@ class _SavedIngredientsPageState extends State<SavedIngredientsPage> {
               },
             ),
           ),
-          ElevatedButton(
+          Padding(
+            padding: EdgeInsets.all(50),
+            child: ElevatedButton(
             onPressed: () {
               Navigator.push(
                 context,
@@ -138,22 +146,8 @@ class _SavedIngredientsPageState extends State<SavedIngredientsPage> {
                 ),
               );
             },
-            child: Text('Browse Ingredients'),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _textEditingController,
-              decoration: const InputDecoration(labelText: 'Enter text here'),
-              onSubmitted: (text) {
-                setState(() {
-                  _notes.add(text);
-                  _saveNotes();
-                });
-                _textEditingController.clear();
-              },
-            ),
-          ),
+            child: const Text('Browse Ingredients'),
+          ),)
         ],
       ),
     );
